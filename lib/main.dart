@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       home: const MyHomePage(title: 'GDSC Project'),
     );
@@ -50,18 +50,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  //int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  //void _incrementCounter() {
+  //setState(() {
+  // This call to setState tells the Flutter framework that something has
+  // changed in this State, which causes it to rerun the build method below
+  // so that the display can reflect the updated values. If we changed
+  // _counter without calling setState(), then the build method would not be
+  // called again, and so nothing would appear to happen.
+  // _counter++;
+  //});
+  //}
 
   @override
   Widget build(BuildContext context) {
@@ -97,21 +97,31 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            //const Text(
+            // 'You have pushed the button this many times:',
+            //),
+            //Text(
+            //  '$_counter',
+            //  style: Theme.of(context).textTheme.headlineMedium,
+            //),
+            Expanded(
+              child: Container(
+                constraints: BoxConstraints.expand(),
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("images/gdsc_background.jpg"),
+                      fit: BoxFit.cover),
+                ),
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      //floatingActionButton: FloatingActionButton(
+      //onPressed: _incrementCounter,
+      //tooltip: 'Increment',
+      //child: const Icon(Icons.add),
+      //), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
