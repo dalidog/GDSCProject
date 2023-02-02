@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "346027423606",
+    "project_id": "gdsc-solutions-challenge",
+    "storage_bucket": "gdsc-solutions-challenge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346027423606:android:3b68865bcfeb844532ec57",
+        "android_client_info": {
+          "package_name": "com.example.gdsc_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346027423606-p59l7eif9852p2ti05ehb5g2gar3bpaf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0PT8w4QN4chwa4yslh3XPzTsQAESpFEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346027423606-p59l7eif9852p2ti05ehb5g2gar3bpaf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
