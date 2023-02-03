@@ -1,8 +1,10 @@
+import 'dart:ui' as ui;
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:spritewidget/spritewidget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +41,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -50,33 +51,31 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //int _counter = 0;
+  late NodeWithSize rootNode;
 
-  //void _incrementCounter() {
-  //setState(() {
-  // This call to setState tells the Flutter framework that something has
-  // changed in this State, which causes it to rerun the build method below
-  // so that the display can reflect the updated values. If we changed
-  // _counter without calling setState(), then the build method would not be
-  // called again, and so nothing would appear to happen.
-  // _counter++;
-  //});
-  //}
+  @override
+  void initState() {
+    super.initState();
+    rootNode = NodeWithSize(const Size(1024.0, 1024.0));
+  }
 
   @override
   Widget build(BuildContext context) {
+    SpriteWidget root = SpriteWidget(rootNode);
+    Sprite house = Sprite.fromImage(Image.asset("images/gdsc_background.jpg"));
+    rootNode.addChild(house);
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    //return SpriteWidget(rootNode);
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -103,13 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            //const Text(
-            // 'You have pushed the button this many times:',
-            //),
-            //Text(
-            //  '$_counter',
-            //  style: Theme.of(context).textTheme.headlineMedium,
-            //),
             Expanded(
               child: Container(
                 constraints: BoxConstraints.expand(),

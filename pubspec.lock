@@ -89,6 +89,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  flame:
+    dependency: "direct main"
+    description:
+      name: flame
+      sha256: "0c55f8d704f09536125c811a19d9aab7407dce245b2bfb507e84296c1c996202"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -160,6 +168,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  ordered_set:
+    dependency: transitive
+    description:
+      name: ordered_set
+      sha256: "74b0454418f58c34c8e527d91fb1ef571297dbcd5d3b4e5f983dc884e39cdf85"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.0"
   path:
     dependency: transitive
     description:
@@ -197,6 +213,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  spritewidget:
+    dependency: "direct main"
+    description:
+      name: spritewidget
+      sha256: bb7dfc5252ae3bfa0f5de5efa2b1c40710ae2819d7770cb0faba2d3292b5d0a0
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   stack_trace:
     dependency: transitive
     description:
@@ -247,4 +271,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=2.19.0 <4.0.0"
-  flutter: ">=1.20.0"
+  flutter: ">=3.3.0"
