@@ -67,7 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     SpriteWidget root = SpriteWidget(rootNode);
-    Sprite house = Sprite.fromImage(Image.asset("images/gdsc_background.jpg"));
+    Sprite house = Sprite.fromImage(Image.asset(
+      'images/house1.png',
+    ));
     rootNode.addChild(house);
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
