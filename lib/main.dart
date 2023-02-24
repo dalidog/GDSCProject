@@ -1,10 +1,15 @@
 import 'dart:ui' as ui;
+import 'dart:async';
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'dart:typed_data';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:spritewidget/spritewidget.dart';
+import 'package:image/image.dart' as img;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,7 +60,12 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyWidget extends StatefulWidget {
+  @override
+  MyWidgetState createState() => new MyWidgetState();
+}
+
+class MyWidgetState extends State<MyWidget> {
   late NodeWithSize rootNode;
 
   @override
@@ -66,11 +76,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    SpriteWidget root = SpriteWidget(rootNode);
-    Sprite house = Sprite.fromImage(Image.asset(
+    loadImages();
+    return SpriteWidget(rootNode);
+  }
+
+  void loadImages() async {
+    ImageMap images = ImageMap();
+    await images.load([
       'images/house1.png',
-    ));
+      'images/house2.png',
+      'images/house3.png',
+      'images/house4.png',
+    ]);
+    // Access a loaded image from the ImageMap
+    var houseImage1 = images['images/house1.png'];
+    Sprite house = Sprite.fromImage(houseImage1!);
     rootNode.addChild(house);
+  }
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -114,6 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
+            Expanded(child: MyWidget()),
           ],
         ),
       ),
