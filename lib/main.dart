@@ -7,6 +7,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  //widgets are the elements from which you build every Flutter app
   const MyApp({super.key});
 
   // This widget is the root of your application.
@@ -50,16 +51,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _counter = 1000; //the starting value
 
-  void _incrementCounter() {
+  void _incrementCounterBy(int val) {
+    //changes counter by a value
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      _counter += val;
+    });
+  }
+
+  void setCounter(int val) {
+    setState(() {
+      _counter = val;
     });
   }
 
@@ -80,6 +88,58 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
+        child: Align(
+          alignment: Alignment.topRight,
+
+          // children: <Widget>[
+          //   const Text(
+          //     'Balance: \n\$',
+          //   ),
+          //   Text(
+          //     '$_counter',
+          //     style: Theme.of(context).textTheme.headlineMedium,
+          //   ),
+
+          child: ElevatedButton(
+            onPressed: () {},
+            child: Text(
+              '\$$_counter',
+              //style: Theme.of(context).textTheme.headlineMedium,
+            ),
+          ),
+
+          // ],
+        ),
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {_incrementCounterBy(-100)},
+        tooltip: 'buy __',
+        child: const Text('buy more houses!'), //Icon(Icons.add),
+      ),
+
+      // children: <Widget>[
+      //   Container(
+      //     padding: const EdgeInsets.all(8),
+      //     child: FloatingActionButton(
+      //       onPressed: () => {_incrementCounterBy(-100)},
+      //       tooltip: 'buy __',
+      //       child: const Text('buy more houses!'), //Icon(Icons.add),
+      //     ),
+      //   ),
+
+      //   Container(
+      //     padding: const EdgeInsets.all(8),
+      //     child: FloatingActionButton(
+      //       onPressed: () => {_incrementCounterBy(-100)},
+      //       tooltip: 'buy __',
+      //       child: const Text('buy more houses!'), //Icon(Icons.add),
+      //     ),
+      //   ),
+
+      // ],
+    );
+    /*  
         child: Column(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
@@ -95,17 +155,29 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
+            
           mainAxisAlignment: MainAxisAlignment.center,
+
           children: <Widget>[
+            
             const Text(
-              'You have pushed the button this many times:',
+              'Balance: \n\$',
             ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            /*
+            ElevatedButton(
+              onPressed: () {
+                //print('button pressed'); //in debug console
+              },
+              child: Text('Next'),
+            ),
+            */
           ],
         ),
+        
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
@@ -113,5 +185,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+    */
   }
 }
