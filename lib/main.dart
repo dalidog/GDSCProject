@@ -111,33 +111,50 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body:
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          Stack(
-        children: <Widget>[
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("images/gdsc_background.jpg"),
-                  fit: BoxFit.fitWidth),
+      body: Container(
+        color: Colors.black,
+        child: Column(
+          children: <Widget>[
+            // Positioned and Non-positioned Widget...
+            Container(
+              child: Stack(
+                alignment: Alignment.topLeft,
+                children: <Widget>[
+                  Container(
+                    width: 500,
+                    height: 500,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("images/gdsc_background.jpg"),
+                        //fit: BoxFit.fitWidth
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 100,
+                    top: 100,
+                    child: Container(
+                      width: 500,
+                      height: 500,
+                      child: MyWidget(),
+                    ),
+                  ),
+                  Container(
+                    width: 80,
+                    height: 80,
+                    color: Colors.blue,
+                  ),
+                ],
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment(2, 3),
-            child: Container(child: MyWidget()),
-          ),
-          Container(
-            width: 80,
-            height: 80,
-            color: Colors.blue,
-          ),
-        ],
+          ],
+        ),
       ),
+
       //floatingActionButton: FloatingActionButton(
       //onPressed: _incrementCounter,
-      //tooltip: 'Increment',
-      //child: const Icon(Icons.add),
+      //tooltip: 'In
+      //ns.add),
       //), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
