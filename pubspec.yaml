@@ -70,6 +70,9 @@ flutter:
     - images/house2.png
     - images/house3.png
     - images/house4.png
+    - images/tree.png
+    - images/dune.png
+    - images/wall.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
