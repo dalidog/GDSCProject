@@ -132,17 +132,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Positioned(
                     left: 100,
-                    top: 100,
+                    top: 225,
                     child: Container(
-                      width: 500,
-                      height: 500,
+                      width: 250,
+                      height: 250,
                       child: MyWidget(),
                     ),
-                  ),
-                  Container(
-                    width: 80,
-                    height: 80,
-                    color: Colors.blue,
                   ),
                 ],
               ),
