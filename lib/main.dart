@@ -128,9 +128,9 @@ class MyHomePageState extends State<MyHomePage> {
     // Access a loaded image from the ImageMap
     var treeImage1 = images['images/tree.png'];
     Sprite tree1 = Sprite.fromImage(treeImage1!);
-    tree1.position = Offset(treeOffset + 150, 0);
+    tree1.position = Offset(treeOffset + 151, 0);
     rootNode.addChild(tree1);
-    treeOffset += 150;
+    treeOffset += 151;
   }
 
   makeSand() async {
@@ -140,9 +140,9 @@ class MyHomePageState extends State<MyHomePage> {
     // Access a loaded image from the ImageMap
     var duneImage1 = images['images/dune.png'];
     Sprite dune1 = Sprite.fromImage(duneImage1!);
-    dune1.position = Offset(duneOffset + 350, 550);
+    dune1.position = Offset(duneOffset + 351, 550);
     rootNode.addChild(dune1);
-    duneOffset += 350;
+    duneOffset += 351;
   }
 
   makeWall() async {
@@ -150,12 +150,12 @@ class MyHomePageState extends State<MyHomePage> {
       'images/wall.png',
     ]);
     // Access a loaded image from the ImageMap
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 12; i++) {
       var wallImage1 = images['images/wall.png'];
       Sprite wall1 = Sprite.fromImage(wallImage1!);
-      wall1.position = Offset(wallOffset + 600, 950);
+      wall1.position = Offset(wallOffset + 199, 900);
       rootNode.addChild(wall1);
-      wallOffset += 600;
+      wallOffset += 199;
     }
   }
 
@@ -225,7 +225,6 @@ class MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               'Balance: \$$counter',
-              //style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
