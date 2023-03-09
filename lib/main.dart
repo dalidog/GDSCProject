@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 import 'dart:async';
 import 'dart:io';
+import 'package:flame/game.dart';
 import 'package:flutter/services.dart';
 import 'dart:typed_data';
 import 'package:english_words/english_words.dart';
@@ -10,6 +11,8 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:spritewidget/spritewidget.dart';
 import 'package:image/image.dart' as img;
+
+late NodeWithSize rootNode;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,17 +49,15 @@ class MyWidget extends StatefulWidget {
 }
 
 class MyWidgetState extends State<MyWidget> {
-  late NodeWithSize rootNode;
-
   @override
   void initState() {
     super.initState();
     rootNode = NodeWithSize(const Size(1024.0, 1024.0));
+    loadImages();
   }
 
   @override
   Widget build(BuildContext context) {
-    loadImages();
     return SpriteWidget(rootNode);
   }
 
@@ -105,6 +106,10 @@ class MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void deleteHouse() {
+    rootNode.removeChild(rootNode.children[0]);
+  }
+
   @override
   Widget build(BuildContext context) {
     //return SpriteWidget(rootNode);
@@ -121,7 +126,8 @@ class MyHomePageState extends State<MyHomePage> {
             Align(
               alignment: Alignment.topLeft,
               child: FloatingActionButton.extended(
-                onPressed: () => {incrementCounterBy(-100)},
+                onPressed: () =>
+                    {incrementCounterBy(-100), deleteHouse()},
                 tooltip: 'buy __',
                 label: const Text('relocate 1 house'),
               ),
