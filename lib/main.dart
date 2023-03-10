@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const MyHomePage(title: 'GDSC Project'),
+      home: const MyHomePage(title: 'BluffSaver'),
     );
   }
 }
@@ -97,6 +97,26 @@ class MyHomePageState extends State<MyHomePage> {
   int treeOffset = -250;
   int duneOffset = -400;
   int wallOffset = -500;
+  bool wallBuilt = false;
+  int numDunes = 0;
+  int numTrees = 0;
+  int numHouses = 4;
+  int _counter = 10;
+  late Timer _timer;
+  bool timerstarted = false;
+
+  void _startTimer() {
+    _counter = 10;
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_counter > 0) {
+          _counter--;
+        } else {
+          _timer.cancel();
+        }
+      });
+    });
+  }
 
   void incrementCounterBy(int val) {
     setState(() {
@@ -161,6 +181,9 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (!timerstarted) {
+      _startTimer();
+    }
     //return SpriteWidget(rootNode);
     return Scaffold(
       appBar: AppBar(
@@ -169,35 +192,53 @@ class MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Container(
-        color: Colors.white,
         child: Column(
           children: <Widget>[
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.all(10),
-              child: Row(
-                children: <Widget>[
-                  FloatingActionButton.extended(
-                    onPressed: () => {incrementCounterBy(-100), deleteHouse()},
-                    tooltip: '\$100',
-                    label: const Text('relocate 10 houses:'),
-                  ),
-                  FloatingActionButton.extended(
-                    onPressed: () => {incrementCounterBy(-50), plantTree()},
-                    tooltip: '\$50',
-                    label: const Text('plant 10 trees'),
-                  ),
-                  FloatingActionButton.extended(
-                    onPressed: () => {incrementCounterBy(-25), makeSand()},
-                    tooltip: '\$25',
-                    label: const Text('create sand dune'),
-                  ),
-                  FloatingActionButton.extended(
-                    onPressed: () => {incrementCounterBy(-500), makeWall()},
-                    tooltip: '\$500',
-                    label: const Text('build sea wall'),
-                  ),
-                ],
+              child: Container(
+                color: Colors.white,
+                child: Row(
+                  children: <Widget>[
+                    FloatingActionButton.extended(
+                      onPressed: () => {
+                        if (numHouses > 0)
+                          {numHouses--, incrementCounterBy(-100), deleteHouse()}
+                      },
+                      tooltip: '\$100',
+                      label: const Text('relocate 10 houses:'),
+                    ),
+                    FloatingActionButton.extended(
+                      onPressed: () => {
+                        if (numTrees < 14)
+                          {numTrees++, incrementCounterBy(-50), plantTree()}
+                      },
+                      tooltip: '\$50',
+                      label: const Text('plant 10 trees'),
+                    ),
+                    FloatingActionButton.extended(
+                      onPressed: () => {
+                        if (numDunes < 6)
+                          {numDunes++, incrementCounterBy(-25), makeSand()}
+                      },
+                      tooltip: '\$25',
+                      label: const Text('create sand dune'),
+                    ),
+                    FloatingActionButton.extended(
+                      onPressed: () => {
+                        if (wallBuilt == false)
+                          {
+                            wallBuilt = true,
+                            incrementCounterBy(-500),
+                            makeWall()
+                          }
+                      },
+                      tooltip: '\$500',
+                      label: const Text('build sea wall'),
+                    ),
+                  ],
+                ),
               ),
             ),
             Stack(
@@ -223,8 +264,35 @@ class MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
-            Text(
-              'Balance: \$$counter',
+            Container(
+              color: Colors.green,
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    'Balance: \$$counter',
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  (_counter > 0)
+                      ? Text("")
+                      : Text(
+                          "DONE!",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 48,
+                          ),
+                        ),
+                  Text(
+                    '$_counter',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 48,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
