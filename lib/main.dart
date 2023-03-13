@@ -13,6 +13,17 @@ import 'package:spritewidget/spritewidget.dart';
 import 'package:image/image.dart' as img;
 
 late NodeWithSize rootNode;
+int counter = 1000; //the starting value
+ImageMap images = ImageMap();
+int treeOffset = -250;
+int duneOffset = -400;
+int wallOffset = -500;
+bool wallBuilt = false;
+int numDunes = 0;
+int numTrees = 0;
+int numHouses = 4;
+int _counter = 30;
+late Timer _timer;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -92,21 +103,13 @@ class MyWidgetState extends State<MyWidget> {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  int counter = 1000; //the starting value
-  ImageMap images = ImageMap();
-  int treeOffset = -250;
-  int duneOffset = -400;
-  int wallOffset = -500;
-  bool wallBuilt = false;
-  int numDunes = 0;
-  int numTrees = 0;
-  int numHouses = 4;
-  int _counter = 10;
-  late Timer _timer;
-  bool timerstarted = false;
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
 
   void _startTimer() {
-    _counter = 10;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         if (_counter > 0) {
@@ -181,8 +184,8 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!timerstarted) {
-      _startTimer();
+    if (counter <= 0) {
+      _counter = 0;
     }
     //return SpriteWidget(rootNode);
     return Scaffold(
@@ -202,32 +205,62 @@ class MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   children: <Widget>[
                     FloatingActionButton.extended(
+                      backgroundColor: (() {
+                        if (numHouses == 0 ||
+                            _counter == 0 ||
+                            counter - 100 < 0) return Colors.grey;
+                      })(),
                       onPressed: () => {
-                        if (numHouses > 0)
+                        if (numHouses > 0 &&
+                            _counter != 0 &&
+                            counter - 100 >= 0)
                           {numHouses--, incrementCounterBy(-100), deleteHouse()}
                       },
                       tooltip: '\$100',
                       label: const Text('relocate 10 houses:'),
                     ),
                     FloatingActionButton.extended(
+                      backgroundColor: (() {
+                        if (numTrees == 14 ||
+                            _counter == 0 ||
+                            counter - 50 < 0) {
+                          return Colors.grey;
+                        }
+                      })(),
                       onPressed: () => {
-                        if (numTrees < 14)
+                        if (numTrees < 14 && _counter != 0 && counter - 50 >= 0)
                           {numTrees++, incrementCounterBy(-50), plantTree()}
                       },
                       tooltip: '\$50',
                       label: const Text('plant 10 trees'),
                     ),
                     FloatingActionButton.extended(
+                      backgroundColor: (() {
+                        if (numDunes == 6 ||
+                            _counter == 0 ||
+                            counter - 25 < 0) {
+                          return Colors.grey;
+                        }
+                      })(),
                       onPressed: () => {
-                        if (numDunes < 6)
+                        if (numDunes < 6 && _counter != 0 && counter - 25 >= 0)
                           {numDunes++, incrementCounterBy(-25), makeSand()}
                       },
                       tooltip: '\$25',
                       label: const Text('create sand dune'),
                     ),
                     FloatingActionButton.extended(
+                      backgroundColor: (() {
+                        if (wallBuilt == true ||
+                            _counter == 0 ||
+                            counter - 500 < 0) {
+                          return Colors.grey;
+                        }
+                      })(),
                       onPressed: () => {
-                        if (wallBuilt == false)
+                        if (wallBuilt == false &&
+                            _counter != 0 &&
+                            counter - 500 >= 0)
                           {
                             wallBuilt = true,
                             incrementCounterBy(-500),
@@ -262,33 +295,62 @@ class MyHomePageState extends State<MyHomePage> {
                     child: MyWidget(),
                   ),
                 ),
+                Positioned(
+                  left: 150,
+                  top: 100,
+                  child: _counter == 0
+                      ? counter > 0
+                          ? Text(
+                              'You WON!',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 45,
+                              ),
+                            )
+                          : Text(
+                              'You LOST!',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 45,
+                              ),
+                            )
+                      : counter <= 0
+                          ? Text(
+                              'You LOST!',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 45,
+                              ),
+                            )
+                          : Text(''),
+                ),
               ],
             ),
             Container(
               color: Colors.green,
               child: Row(
                 children: <Widget>[
-                  Text(
-                    'Balance: \$$counter',
-                    textAlign: TextAlign.right,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Balance: \$$counter',
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
                   ),
-                  (_counter > 0)
-                      ? Text("")
-                      : Text(
-                          "DONE!",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 48,
-                          ),
-                        ),
+                  Spacer(),
                   Text(
-                    '$_counter',
+                    'TIME: $_counter',
                     style: TextStyle(
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 48,
                     ),
                   ),
                 ],
