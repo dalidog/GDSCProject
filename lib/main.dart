@@ -238,15 +238,8 @@ class MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Container(
-      body: Container(
         child: Column(
           children: <Widget>[
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.all(10),
