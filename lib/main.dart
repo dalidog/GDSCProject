@@ -1,8 +1,21 @@
+import 'dart:ui' as ui;
+import 'dart:async';
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'dart:typed_data';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:spritewidget/spritewidget.dart';
+import 'package:image/image.dart' as img;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -25,7 +38,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       home: const MyHomePage(title: 'GDSC Project'),
     );
@@ -34,7 +47,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -45,10 +57,10 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 1000; //the starting value
@@ -69,8 +81,44 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter = val;
     });
+
+class MyWidget extends StatefulWidget {
+  @override
+  MyWidgetState createState() => new MyWidgetState();
+}
+
+class MyWidgetState extends State<MyWidget> {
+  late NodeWithSize rootNode;
+
+  @override
+  void initState() {
+    super.initState();
+    rootNode = NodeWithSize(const Size(1024.0, 1024.0));
+
   }
 
+  @override
+  Widget build(BuildContext context) {
+    loadImages();
+    return SpriteWidget(rootNode);
+  }
+
+  void loadImages() async {
+    ImageMap images = ImageMap();
+    await images.load([
+      'images/house1.png',
+      'images/house2.png',
+      'images/house3.png',
+      'images/house4.png',
+    ]);
+    // Access a loaded image from the ImageMap
+    var houseImage1 = images['images/house1.png'];
+    Sprite house = Sprite.fromImage(houseImage1!);
+    rootNode.addChild(house);
+  }
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -79,12 +127,14 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    //return SpriteWidget(rootNode);
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
+
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -166,6 +216,37 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+
+      body: Container(
+        color: Colors.black,
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: Stack(
+                alignment: Alignment.topLeft,
+                children: <Widget>[
+                  Container(
+                    width: 500,
+                    height: 500,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("images/gdsc_background.jpg"),
+                        //fit: BoxFit.fitWidth
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 100,
+                    top: 225,
+                    child: Container(
+                      width: 250,
+                      height: 250,
+                      child: MyWidget(),
+                    ),
+                  ),
+                ],
+              ),
+
             ),
             /*
             ElevatedButton(
@@ -179,11 +260,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+
+      //floatingActionButton: FloatingActionButton(
+      //onPressed: _incrementCounter,
+      //tooltip: 'In
+      //ns.add),
+      //), // This trailing comma makes auto-formatting nicer for build methods.
     );
     */
   }
