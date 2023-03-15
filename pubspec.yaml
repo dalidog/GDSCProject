@@ -40,6 +40,7 @@ dependencies:
   english_words: ^4.0.0
   provider: ^6.0.0
   image: ^4.0.15
+  restart_app: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,12 @@ flutter:
     - images/house2.png
     - images/house3.png
     - images/house4.png
+
+    - images/tree.png
+    - images/dune.png
+    - images/wall.png
+    - images/wave.png
+    - images/wave-short.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
