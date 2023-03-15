@@ -16,6 +16,7 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:spritewidget/spritewidget.dart';
 import 'package:image/image.dart' as img;
+import 'donate_page.dart';
 
 late NodeWithSize rootNode;
 int counter = 1000; //the starting value
@@ -121,9 +122,41 @@ class MyHomePageState extends State<MyHomePage> {
           _counter--;
         } else {
           _timer.cancel();
+          _showDialog();
         }
       });
     });
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Support Our Cause!'),
+          content: Text(
+              'Thank you for playing. Would you like to donate to our cause?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DonatePage()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void incrementCounterBy(int val) {
