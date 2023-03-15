@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class DonatePage extends StatefulWidget {
+class DonatePage extends StatelessWidget {
   const DonatePage({Key? key}) : super(key: key);
 
-  @override
-  _DonatePageState createState() => _DonatePageState();
-}
-
-class _DonatePageState extends State<DonatePage> {
-  final _webViewKey = UniqueKey();
+  Future<void> _openDonationPage() async {
+    const url =
+        'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate'; // Replace with your actual donation page URL
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +20,11 @@ class _DonatePageState extends State<DonatePage> {
       appBar: AppBar(
         title: const Text('Donate'),
       ),
-      body: WebView(
-        key: _webViewKey,
-        initialUrl:
-            'https://www.example.com', // Replace with your actual donation page URL
-        javascriptMode: JavascriptMode.unrestricted,
+      body: Center(
+        child: ElevatedButton(
+          onPressed: _openDonationPage,
+          child: const Text('Donate Now'),
+        ),
       ),
     );
   }
