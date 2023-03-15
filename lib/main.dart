@@ -9,6 +9,11 @@ import 'dart:io';
 import 'package:flame/game.dart';
 import 'package:flutter/services.dart';
 import 'dart:typed_data';
+import 'dart:async';
+import 'dart:io';
+import 'package:flame/game.dart';
+import 'package:flutter/services.dart';
+import 'dart:typed_data';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -236,6 +241,9 @@ class MyHomePageState extends State<MyHomePage> {
       body: Container(
         child: Column(
           children: <Widget>[
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.all(10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.all(10),
