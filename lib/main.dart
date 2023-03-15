@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:spritewidget/spritewidget.dart';
+import 'donate_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
