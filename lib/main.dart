@@ -4,14 +4,21 @@ import 'dart:io';
 import 'package:flame/game.dart';
 import 'package:flutter/services.dart';
 import 'dart:typed_data';
+import 'dart:async';
+import 'dart:io';
+import 'package:flame/game.dart';
+import 'package:flutter/services.dart';
+import 'dart:typed_data';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:spritewidget/spritewidget.dart';
+import 'package:image/image.dart' as img;
 import 'donate_page.dart';
 
+late NodeWithSize rootNode;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -90,18 +97,25 @@ class MyWidgetState extends State<MyWidget> {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  @override
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
+  int counter = 1000; //the starting value
+  ImageMap images = ImageMap();
+  int treeOffset = -250;
+  int duneOffset = -400;
+  int wallOffset = -500;
+  bool wallBuilt = false;
+  int numDunes = 0;
+  int numTrees = 0;
+  int numHouses = 4;
+  int _counter = 10;
+  late Timer _timer;
+  bool timerstarted = false;
 
   void _startTimer() {
+    _counter = 10;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         if (_counter > 0) {
           _counter--;
-          moveWave();
         } else {
           _timer.cancel();
         }
@@ -144,7 +158,7 @@ class MyHomePageState extends State<MyHomePage> {
     treeOffset += 151;
   }
 
-  void makeSand() async {
+  makeSand() async {
     await images.load([
       'images/dune.png',
     ]);
@@ -156,7 +170,7 @@ class MyHomePageState extends State<MyHomePage> {
     duneOffset += 351;
   }
 
-  void makeWall() async {
+  makeWall() async {
     await images.load([
       'images/wall.png',
     ]);
@@ -170,27 +184,10 @@ class MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void moveWave() async {
-    await images.load([
-      'images/wave-short.png',
-    ]);
-    // Access a loaded image from the ImageMap
-    var waveImage1 = images['images/wave-short.png'];
-    Sprite wave1 = Sprite.fromImage(waveImage1!);
-    wave1.scaleX = 8.0;
-    wave1.scaleY = 2.0;
-    wave1.position = Offset(0, waveOffset);
-    rootNode.addChild(wave1);
-    waveOffset -= waveSpeed;
-    if (waveOffset == 0) {
-      _counter = 0;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (counter <= 0) {
-      _counter = 0;
+    if (!timerstarted) {
+      _startTimer();
     }
     //return SpriteWidget(rootNode);
     return Scaffold(
@@ -200,8 +197,12 @@ class MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Container(
+      body: Container(
         child: Column(
           children: <Widget>[
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.all(10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.all(10),
@@ -210,98 +211,40 @@ class MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   children: <Widget>[
                     FloatingActionButton.extended(
-                      backgroundColor: (() {
-                        if (numHouses == 0 ||
-                            _counter == 0 ||
-                            counter - 100 < 0) return Colors.grey;
-                      })(),
                       onPressed: () => {
-                        if (numHouses > 0 &&
-                            _counter != 0 &&
-                            counter - 100 >= 0)
-                          {
-                            numHouses--,
-                            incrementCounterBy(-100),
-                            deleteHouse(),
-                            waveSpeed -= 5
-                          }
+                        if (numHouses > 0)
+                          {numHouses--, incrementCounterBy(-100), deleteHouse()}
                       },
                       tooltip: '\$100',
                       label: const Text('relocate 10 houses:'),
                     ),
                     FloatingActionButton.extended(
-                      backgroundColor: (() {
-                        if (numTrees == 14 ||
-                            _counter == 0 ||
-                            counter - 50 < 0) {
-                          return Colors.grey;
-                        }
-                      })(),
                       onPressed: () => {
-                        if (numTrees < 14 && _counter != 0 && counter - 50 >= 0)
-                          {
-                            numTrees++,
-                            incrementCounterBy(-50),
-                            plantTree(),
-                            waveSpeed -= 0.5
-                          }
+                        if (numTrees < 14)
+                          {numTrees++, incrementCounterBy(-50), plantTree()}
                       },
                       tooltip: '\$50',
                       label: const Text('plant 10 trees'),
                     ),
                     FloatingActionButton.extended(
-                      backgroundColor: (() {
-                        if (numDunes == 6 ||
-                            _counter == 0 ||
-                            counter - 25 < 0) {
-                          return Colors.grey;
-                        }
-                      })(),
                       onPressed: () => {
-                        if (numDunes < 6 && _counter != 0 && counter - 25 >= 0)
-                          {
-                            numDunes++,
-                            incrementCounterBy(-25),
-                            makeSand(),
-                            waveSpeed -= 1
-                          }
+                        if (numDunes < 6)
+                          {numDunes++, incrementCounterBy(-25), makeSand()}
                       },
                       tooltip: '\$25',
                       label: const Text('create sand dune'),
                     ),
                     FloatingActionButton.extended(
-                      backgroundColor: (() {
-                        if (wallBuilt == true ||
-                            _counter == 0 ||
-                            counter - 500 < 0) {
-                          return Colors.grey;
-                        }
-                      })(),
                       onPressed: () => {
-                        if (wallBuilt == false &&
-                            _counter != 0 &&
-                            counter - 500 >= 0)
+                        if (wallBuilt == false)
                           {
                             wallBuilt = true,
                             incrementCounterBy(-500),
-                            makeWall(),
-                            waveSpeed -= 8
+                            makeWall()
                           }
                       },
                       tooltip: '\$500',
                       label: const Text('build sea wall'),
-                    ),
-                    SizedBox(
-                      width: 200,
-                      child: Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Suggest a solution',
-                          ),
-                        ),
-                      ),
                     ),
                   ],
                 ),
@@ -328,74 +271,33 @@ class MyHomePageState extends State<MyHomePage> {
                     child: MyWidget(),
                   ),
                 ),
-                Positioned(
-                  left: 150,
-                  top: 100,
-                  child: _counter == 0
-                      ? counter > 0 && waveOffset > 0
-                          ? Text(
-                              'You WON!',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 45,
-                              ),
-                            )
-                          : Text(
-                              'You LOST!',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 45,
-                              ),
-                            )
-                      : counter <= 0
-                          ? Text(
-                              'You LOST!',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 45,
-                              ),
-                            )
-                          : Text(''),
-                ),
-                Positioned(
-                  left: 200,
-                  top: 300,
-                  child: (_counter == 0 || counter <= 0)
-                      ? FloatingActionButton.extended(
-                          onPressed: () {
-                            Restart.restartApp();
-                          },
-                          label: const Text('play again'),
-                        )
-                      : Text(""),
-                ),
               ],
             ),
             Container(
               color: Colors.green,
               child: Row(
                 children: <Widget>[
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Balance: \$$counter',
-                      textAlign: TextAlign.right,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                  ),
-                  Spacer(),
                   Text(
-                    'TIME: $_counter',
+                    'Balance: \$$counter',
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  (_counter > 0)
+                      ? Text("")
+                      : Text(
+                          "DONE!",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 48,
+                          ),
+                        ),
+                  Text(
+                    '$_counter',
                     style: TextStyle(
-                      color: Colors.white,
                       fontWeight: FontWeight.bold,
+                      fontSize: 48,
                     ),
                   ),
                 ],
