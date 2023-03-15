@@ -11,6 +11,8 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:spritewidget/spritewidget.dart';
 import 'package:image/image.dart' as img;
+import 'package:flutter/services.dart';
+import 'package:restart_app/restart_app.dart';
 
 late NodeWithSize rootNode;
 int counter = 1000; //the starting value
@@ -18,10 +20,12 @@ ImageMap images = ImageMap();
 int treeOffset = -250;
 int duneOffset = -400;
 int wallOffset = -500;
+double waveOffset = 1000;
 bool wallBuilt = false;
 int numDunes = 0;
 int numTrees = 0;
 int numHouses = 4;
+double waveSpeed = 40.0;
 int _counter = 30;
 late Timer _timer;
 
@@ -114,6 +118,7 @@ class MyHomePageState extends State<MyHomePage> {
       setState(() {
         if (_counter > 0) {
           _counter--;
+          moveWave();
         } else {
           _timer.cancel();
         }
@@ -156,7 +161,7 @@ class MyHomePageState extends State<MyHomePage> {
     treeOffset += 151;
   }
 
-  makeSand() async {
+  void makeSand() async {
     await images.load([
       'images/dune.png',
     ]);
@@ -168,7 +173,7 @@ class MyHomePageState extends State<MyHomePage> {
     duneOffset += 351;
   }
 
-  makeWall() async {
+  void makeWall() async {
     await images.load([
       'images/wall.png',
     ]);
@@ -179,6 +184,23 @@ class MyHomePageState extends State<MyHomePage> {
       wall1.position = Offset(wallOffset + 199, 900);
       rootNode.addChild(wall1);
       wallOffset += 199;
+    }
+  }
+
+  void moveWave() async {
+    await images.load([
+      'images/wave-short.png',
+    ]);
+    // Access a loaded image from the ImageMap
+    var waveImage1 = images['images/wave-short.png'];
+    Sprite wave1 = Sprite.fromImage(waveImage1!);
+    wave1.scaleX = 8.0;
+    wave1.scaleY = 2.0;
+    wave1.position = Offset(0, waveOffset);
+    rootNode.addChild(wave1);
+    waveOffset -= waveSpeed;
+    if (waveOffset == 0) {
+      _counter = 0;
     }
   }
 
@@ -214,7 +236,12 @@ class MyHomePageState extends State<MyHomePage> {
                         if (numHouses > 0 &&
                             _counter != 0 &&
                             counter - 100 >= 0)
-                          {numHouses--, incrementCounterBy(-100), deleteHouse()}
+                          {
+                            numHouses--,
+                            incrementCounterBy(-100),
+                            deleteHouse(),
+                            waveSpeed -= 5
+                          }
                       },
                       tooltip: '\$100',
                       label: const Text('relocate 10 houses:'),
@@ -229,7 +256,12 @@ class MyHomePageState extends State<MyHomePage> {
                       })(),
                       onPressed: () => {
                         if (numTrees < 14 && _counter != 0 && counter - 50 >= 0)
-                          {numTrees++, incrementCounterBy(-50), plantTree()}
+                          {
+                            numTrees++,
+                            incrementCounterBy(-50),
+                            plantTree(),
+                            waveSpeed -= 0.5
+                          }
                       },
                       tooltip: '\$50',
                       label: const Text('plant 10 trees'),
@@ -244,7 +276,12 @@ class MyHomePageState extends State<MyHomePage> {
                       })(),
                       onPressed: () => {
                         if (numDunes < 6 && _counter != 0 && counter - 25 >= 0)
-                          {numDunes++, incrementCounterBy(-25), makeSand()}
+                          {
+                            numDunes++,
+                            incrementCounterBy(-25),
+                            makeSand(),
+                            waveSpeed -= 1
+                          }
                       },
                       tooltip: '\$25',
                       label: const Text('create sand dune'),
@@ -264,11 +301,24 @@ class MyHomePageState extends State<MyHomePage> {
                           {
                             wallBuilt = true,
                             incrementCounterBy(-500),
-                            makeWall()
+                            makeWall(),
+                            waveSpeed -= 8
                           }
                       },
                       tooltip: '\$500',
                       label: const Text('build sea wall'),
+                    ),
+                    SizedBox(
+                      width: 200,
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Suggest a solution',
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -299,7 +349,7 @@ class MyHomePageState extends State<MyHomePage> {
                   left: 150,
                   top: 100,
                   child: _counter == 0
-                      ? counter > 0
+                      ? counter > 0 && waveOffset > 0
                           ? Text(
                               'You WON!',
                               textAlign: TextAlign.center,
@@ -329,6 +379,18 @@ class MyHomePageState extends State<MyHomePage> {
                               ),
                             )
                           : Text(''),
+                ),
+                Positioned(
+                  left: 200,
+                  top: 300,
+                  child: (_counter == 0 || counter <= 0)
+                      ? FloatingActionButton.extended(
+                          onPressed: () {
+                            Restart.restartApp();
+                          },
+                          label: const Text('play again'),
+                        )
+                      : Text(""),
                 ),
               ],
             ),
