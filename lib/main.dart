@@ -179,6 +179,29 @@ class MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void _showButton() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Time's up!"),
+          content: Text("Would you like to go to the donate page?"),
+          actions: <Widget>[
+            ElevatedButton(
+              child: Text("Go to donate page"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DonatePage()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!timerstarted) {
