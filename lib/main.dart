@@ -10,24 +10,7 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:spritewidget/spritewidget.dart';
-import 'package:image/image.dart' as img;
-import 'package:flutter/services.dart';
-import 'package:restart_app/restart_app.dart';
-
-late NodeWithSize rootNode;
-int counter = 1000; //the starting value
-ImageMap images = ImageMap();
-int treeOffset = -250;
-int duneOffset = -400;
-int wallOffset = -500;
-double waveOffset = 1000;
-bool wallBuilt = false;
-int numDunes = 0;
-int numTrees = 0;
-int numHouses = 4;
-double waveSpeed = 40.0;
-int _counter = 30;
-late Timer _timer;
+import 'donate_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
