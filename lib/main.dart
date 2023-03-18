@@ -61,7 +61,6 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 1000; //the starting value
 
@@ -81,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter = val;
     });
+  }
 
 class MyWidget extends StatefulWidget {
   @override
@@ -94,7 +94,6 @@ class MyWidgetState extends State<MyWidget> {
   void initState() {
     super.initState();
     rootNode = NodeWithSize(const Size(1024.0, 1024.0));
-
   }
 
   @override
