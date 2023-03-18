@@ -34,6 +34,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  //if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+  // setWindowMinSize(const Size(500, 700));
+  //  setWindowMaxSize(const Size(500, 700));
+  //}
   runApp(const MyApp());
 }
 
@@ -217,208 +221,214 @@ class MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Container(
-        child: Column(
-          children: <Widget>[
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(10),
-              child: Container(
-                color: Colors.white,
-                child: Row(
-                  children: <Widget>[
-                    FloatingActionButton.extended(
-                      backgroundColor: (() {
-                        if (numHouses == 0 ||
-                            _counter == 0 ||
-                            counter - 100 < 0) return Colors.grey;
-                      })(),
-                      onPressed: () => {
-                        if (numHouses > 0 &&
-                            _counter != 0 &&
-                            counter - 100 >= 0)
-                          {
-                            numHouses--,
-                            incrementCounterBy(-100),
-                            deleteHouse(),
-                            waveSpeed -= 5
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                  color: Colors.white,
+                  child: Row(
+                    children: <Widget>[
+                      FloatingActionButton.extended(
+                        backgroundColor: (() {
+                          if (numHouses == 0 ||
+                              _counter == 0 ||
+                              counter - 100 < 0) return Colors.grey;
+                        })(),
+                        onPressed: () => {
+                          if (numHouses > 0 &&
+                              _counter != 0 &&
+                              counter - 100 >= 0)
+                            {
+                              numHouses--,
+                              incrementCounterBy(-100),
+                              deleteHouse(),
+                              waveSpeed -= 5
+                            }
+                        },
+                        tooltip: '\$100',
+                        label: const Text('relocate 10 houses:'),
+                      ),
+                      FloatingActionButton.extended(
+                        backgroundColor: (() {
+                          if (numTrees == 14 ||
+                              _counter == 0 ||
+                              counter - 50 < 0) {
+                            return Colors.grey;
                           }
-                      },
-                      tooltip: '\$100',
-                      label: const Text('relocate 10 houses:'),
-                    ),
-                    FloatingActionButton.extended(
-                      backgroundColor: (() {
-                        if (numTrees == 14 ||
-                            _counter == 0 ||
-                            counter - 50 < 0) {
-                          return Colors.grey;
-                        }
-                      })(),
-                      onPressed: () => {
-                        if (numTrees < 14 && _counter != 0 && counter - 50 >= 0)
-                          {
-                            numTrees++,
-                            incrementCounterBy(-50),
-                            plantTree(),
-                            waveSpeed -= 0.5
+                        })(),
+                        onPressed: () => {
+                          if (numTrees < 14 &&
+                              _counter != 0 &&
+                              counter - 50 >= 0)
+                            {
+                              numTrees++,
+                              incrementCounterBy(-50),
+                              plantTree(),
+                              waveSpeed -= 0.5
+                            }
+                        },
+                        tooltip: '\$50',
+                        label: const Text('plant 10 trees'),
+                      ),
+                      FloatingActionButton.extended(
+                        backgroundColor: (() {
+                          if (numDunes == 6 ||
+                              _counter == 0 ||
+                              counter - 25 < 0) {
+                            return Colors.grey;
                           }
-                      },
-                      tooltip: '\$50',
-                      label: const Text('plant 10 trees'),
-                    ),
-                    FloatingActionButton.extended(
-                      backgroundColor: (() {
-                        if (numDunes == 6 ||
-                            _counter == 0 ||
-                            counter - 25 < 0) {
-                          return Colors.grey;
-                        }
-                      })(),
-                      onPressed: () => {
-                        if (numDunes < 6 && _counter != 0 && counter - 25 >= 0)
-                          {
-                            numDunes++,
-                            incrementCounterBy(-25),
-                            makeSand(),
-                            waveSpeed -= 1
+                        })(),
+                        onPressed: () => {
+                          if (numDunes < 6 &&
+                              _counter != 0 &&
+                              counter - 25 >= 0)
+                            {
+                              numDunes++,
+                              incrementCounterBy(-25),
+                              makeSand(),
+                              waveSpeed -= 1
+                            }
+                        },
+                        tooltip: '\$25',
+                        label: const Text('create sand dune'),
+                      ),
+                      FloatingActionButton.extended(
+                        backgroundColor: (() {
+                          if (wallBuilt == true ||
+                              _counter == 0 ||
+                              counter - 500 < 0) {
+                            return Colors.grey;
                           }
-                      },
-                      tooltip: '\$25',
-                      label: const Text('create sand dune'),
-                    ),
-                    FloatingActionButton.extended(
-                      backgroundColor: (() {
-                        if (wallBuilt == true ||
-                            _counter == 0 ||
-                            counter - 500 < 0) {
-                          return Colors.grey;
-                        }
-                      })(),
-                      onPressed: () => {
-                        if (wallBuilt == false &&
-                            _counter != 0 &&
-                            counter - 500 >= 0)
-                          {
-                            wallBuilt = true,
-                            incrementCounterBy(-500),
-                            makeWall(),
-                            waveSpeed -= 8
-                          }
-                      },
-                      tooltip: '\$500',
-                      label: const Text('build sea wall'),
-                    ),
-                    SizedBox(
-                      width: 200,
-                      child: Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Suggest a solution',
+                        })(),
+                        onPressed: () => {
+                          if (wallBuilt == false &&
+                              _counter != 0 &&
+                              counter - 500 >= 0)
+                            {
+                              wallBuilt = true,
+                              incrementCounterBy(-500),
+                              makeWall(),
+                              waveSpeed -= 8
+                            }
+                        },
+                        tooltip: '\$500',
+                        label: const Text('build sea wall'),
+                      ),
+                      SizedBox(
+                        width: 200,
+                        child: Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Suggest a solution',
+                            ),
                           ),
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Stack(
+                alignment: Alignment.topLeft,
+                children: <Widget>[
+                  Container(
+                    width: 500,
+                    height: 500,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("images/gdsc_background.jpg"),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 50,
+                    top: 225,
+                    child: Container(
+                      width: 250,
+                      height: 250,
+                      child: MyWidget(),
+                    ),
+                  ),
+                  Positioned(
+                    left: 150,
+                    top: 100,
+                    child: _counter == 0
+                        ? counter > 0 && waveOffset > 0
+                            ? Text(
+                                'You WON!',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 45,
+                                ),
+                              )
+                            : Text(
+                                'You LOST!',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 45,
+                                ),
+                              )
+                        : counter <= 0
+                            ? Text(
+                                'You LOST!',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 45,
+                                ),
+                              )
+                            : Text(''),
+                  ),
+                  Positioned(
+                    left: 200,
+                    top: 300,
+                    child: (_counter == 0 || counter <= 0)
+                        ? FloatingActionButton.extended(
+                            onPressed: () {
+                              Restart.restartApp();
+                            },
+                            label: const Text('play again'),
+                          )
+                        : Text(""),
+                  ),
+                ],
+              ),
+              Container(
+                color: Colors.green,
+                child: Row(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Balance: \$$counter',
+                        textAlign: TextAlign.right,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ),
+                    Spacer(),
+                    Text(
+                      'TIME: $_counter',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-            Stack(
-              alignment: Alignment.topLeft,
-              children: <Widget>[
-                Container(
-                  width: 500,
-                  height: 500,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("images/gdsc_background.jpg"),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 50,
-                  top: 225,
-                  child: Container(
-                    width: 250,
-                    height: 250,
-                    child: MyWidget(),
-                  ),
-                ),
-                Positioned(
-                  left: 150,
-                  top: 100,
-                  child: _counter == 0
-                      ? counter > 0 && waveOffset > 0
-                          ? Text(
-                              'You WON!',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 45,
-                              ),
-                            )
-                          : Text(
-                              'You LOST!',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 45,
-                              ),
-                            )
-                      : counter <= 0
-                          ? Text(
-                              'You LOST!',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 45,
-                              ),
-                            )
-                          : Text(''),
-                ),
-                Positioned(
-                  left: 200,
-                  top: 300,
-                  child: (_counter == 0 || counter <= 0)
-                      ? FloatingActionButton.extended(
-                          onPressed: () {
-                            Restart.restartApp();
-                          },
-                          label: const Text('play again'),
-                        )
-                      : Text(""),
-                ),
-              ],
-            ),
-            Container(
-              color: Colors.green,
-              child: Row(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Balance: \$$counter',
-                      textAlign: TextAlign.right,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    'TIME: $_counter',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
