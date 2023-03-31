@@ -24,7 +24,7 @@ ImageMap images = ImageMap();
 int treeOffset = -250;
 int duneOffset = -400;
 int wallOffset = -500;
-double waveOffset = 1000;
+double waveOffset = 500;
 bool wallBuilt = false;
 int numDunes = 0;
 int numTrees = 0;
@@ -253,7 +253,11 @@ class GameState extends State<Game> {
     Sprite wave1 = Sprite.fromImage(waveImage1!);
     wave1.scaleX = 8.0;
     wave1.scaleY = 2.0;
-    wave1.position = Offset(0, waveOffset);
+
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    wave1.position = Offset(screenWidth / 2, waveOffset + screenHeight / 2);
+
     rootNode.addChild(wave1);
     waveOffset -= waveSpeed;
     if (waveOffset == 0) {
@@ -501,17 +505,6 @@ class GameState extends State<Game> {
                           )
                         : Text(""),
                   ),
-                  Positioned(
-                    left: 200,
-                    top: 400,
-                    child: (_counter == 0 || counter <= 0)
-                        ? FloatingActionButton.extended(
-                            heroTag: "test",
-                            onPressed: _launchDonateURL,
-                            label: const Text('test link'),
-                          )
-                        : Text(""),
-                  ),
                 ],
               ),
               Container(
@@ -557,7 +550,7 @@ class EndGame extends StatelessWidget {
 
 _launchVegetationURL() async {
   const url =
-      'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate';
+      'https://graniteseed.com/blog/how-do-plants-help-prevent-erosion/';
   final uri = Uri.parse(url);
   if (await canLaunchUrl(uri)) {
     await launchUrl(uri);
@@ -568,7 +561,7 @@ _launchVegetationURL() async {
 
 _launchSandDunesURL() async {
   const url =
-      'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate';
+      'https://beachduneguide.uconn.edu/protecting-dunes/#:~:text=Sand%20dunes%20provide%20natural%20coastal,supplying%20sand%20to%20eroded%20beaches.';
   final uri = Uri.parse(url);
   if (await canLaunchUrl(uri)) {
     await launchUrl(uri);
@@ -578,8 +571,7 @@ _launchSandDunesURL() async {
 }
 
 _launchSeaWallURL() async {
-  const url =
-      'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate';
+  const url = 'https://www.ctc-n.org/technologies/sea-walls';
   final uri = Uri.parse(url);
   if (await canLaunchUrl(uri)) {
     await launchUrl(uri);
@@ -603,49 +595,51 @@ class LearnMore extends StatelessWidget {
           scrollDirection: Axis.vertical,
           padding: EdgeInsets.all(10),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Stack(
-                alignment: Alignment.topLeft,
-                children: <Widget>[
-                  Container(
-                    width: 500,
-                    height: 500,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                            "images/erosion_prevention_measures.png"),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: Stack(
+                  alignment: Alignment.topLeft,
+                  children: <Widget>[
+                    Container(
+                      width: 500,
+                      height: 500,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              "images/erosion_prevention_measures.png"),
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    left: 200,
-                    top: 200,
-                    child: FloatingActionButton.extended(
-                      heroTag: "vegetation",
-                      onPressed: _launchVegetationURL,
-                      label: const Text('vegetation'),
+                    Positioned(
+                      left: 200,
+                      top: 200,
+                      child: FloatingActionButton.extended(
+                        heroTag: "vegetation",
+                        onPressed: _launchVegetationURL,
+                        label: const Text('vegetation'),
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    left: 200,
-                    top: 300,
-                    child: FloatingActionButton.extended(
-                      heroTag: "sand dunes",
-                      onPressed: _launchSandDunesURL(),
-                      label: const Text('sand dunes'),
+                    Positioned(
+                      left: 200,
+                      top: 360,
+                      child: FloatingActionButton.extended(
+                        heroTag: "sand dunes",
+                        onPressed: _launchSandDunesURL,
+                        label: const Text('sand dunes'),
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    left: 200,
-                    top: 350,
-                    child: FloatingActionButton.extended(
-                      heroTag: "sea wall",
-                      onPressed: _launchSeaWallURL(),
-                      label: const Text('sea wall'),
+                    Positioned(
+                      left: 210,
+                      top: 420,
+                      child: FloatingActionButton.extended(
+                        heroTag: "sea wall",
+                        onPressed: _launchSeaWallURL,
+                        label: const Text('sea wall'),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
