@@ -15,6 +15,7 @@ import 'package:spritewidget/spritewidget.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter/services.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // variables
 late NodeWithSize rootNode;
@@ -260,6 +261,42 @@ class GameState extends State<Game> {
     }
   }
 
+  //url launching
+  _launchDonateURL() async {
+    const url =
+        'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate';
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+/*
+  _launchURL() async {
+    const url =
+        'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate';
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _launchDonateURL() async {
+    const url =
+        'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate';
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+  */
+
   @override
   Widget build(BuildContext context) {
     if (counter <= 0) {
@@ -286,6 +323,7 @@ class GameState extends State<Game> {
                   child: Row(
                     children: <Widget>[
                       FloatingActionButton.extended(
+                        heroTag: "build houses",
                         backgroundColor: (() {
                           if (numHouses == 0 ||
                               _counter == 0 ||
@@ -306,6 +344,7 @@ class GameState extends State<Game> {
                         label: const Text('relocate 10 houses:'),
                       ),
                       FloatingActionButton.extended(
+                        heroTag: "build trees",
                         backgroundColor: (() {
                           if (numTrees == 14 ||
                               _counter == 0 ||
@@ -328,6 +367,7 @@ class GameState extends State<Game> {
                         label: const Text('plant 10 trees'),
                       ),
                       FloatingActionButton.extended(
+                        heroTag: "build dunes",
                         backgroundColor: (() {
                           if (numDunes == 6 ||
                               _counter == 0 ||
@@ -350,6 +390,7 @@ class GameState extends State<Game> {
                         label: const Text('create sand dune'),
                       ),
                       FloatingActionButton.extended(
+                        heroTag: "build wall",
                         backgroundColor: (() {
                           if (wallBuilt == true ||
                               _counter == 0 ||
@@ -445,13 +486,53 @@ class GameState extends State<Game> {
                   ),
                   Positioned(
                     left: 200,
-                    top: 300,
+                    top: 250,
                     child: (_counter == 0 || counter <= 0)
                         ? FloatingActionButton.extended(
+                            heroTag: "play again",
                             onPressed: () {
                               Restart.restartApp();
                             },
                             label: const Text('play again'),
+                          )
+                        : Text(""),
+                  ),
+                  Positioned(
+                    left: 210,
+                    top: 300,
+                    child: (_counter == 0 || counter <= 0)
+                        ? FloatingActionButton.extended(
+                            heroTag: "donate",
+                            onPressed: _launchDonateURL,
+                            label: const Text('donate'),
+                          )
+                        : Text(""),
+                  ),
+                  Positioned(
+                    left: 200,
+                    top: 350,
+                    child: (_counter == 0 || counter <= 0)
+                        ? FloatingActionButton.extended(
+                            heroTag: "learn more",
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LearnMore()),
+                              );
+                            },
+                            label: const Text('learn more'),
+                          )
+                        : Text(""),
+                  ),
+                  Positioned(
+                    left: 200,
+                    top: 400,
+                    child: (_counter == 0 || counter <= 0)
+                        ? FloatingActionButton.extended(
+                            heroTag: "test",
+                            onPressed: _launchDonateURL,
+                            label: const Text('test link'),
                           )
                         : Text(""),
                   ),
@@ -495,5 +576,27 @@ class EndGame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold();
+  }
+}
+
+class LearnMore extends StatelessWidget {
+  const LearnMore({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+            'Learn more about preventative measures for bluff erosion!'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Go back!'),
+        ),
+      ),
+    );
   }
 }
