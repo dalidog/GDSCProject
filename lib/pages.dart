@@ -55,7 +55,7 @@ class Intro extends StatelessWidget {
         centerTitle: true,
       ),
       body: Container(
-        color: Color.fromARGB(255, 133, 171, 202),
+        color: ui.Color.fromRGBO(133, 171, 202, 1),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           padding: EdgeInsets.all(10),
@@ -272,30 +272,6 @@ class GameState extends State<Game> {
       throw 'Could not launch $url';
     }
   }
-
-/*
-  _launchURL() async {
-    const url =
-        'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate';
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _launchDonateURL() async {
-    const url =
-        'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate';
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -579,6 +555,39 @@ class EndGame extends StatelessWidget {
   }
 }
 
+_launchVegetationURL() async {
+  const url =
+      'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate';
+  final uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
+_launchSandDunesURL() async {
+  const url =
+      'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate';
+  final uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
+_launchSeaWallURL() async {
+  const url =
+      'https://www.surfrider.org/campaigns/coastal-bluff-in-santa-barbara-saved?form=donate';
+  final uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
 class LearnMore extends StatelessWidget {
   const LearnMore({super.key});
 
@@ -586,15 +595,60 @@ class LearnMore extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-            'Learn more about preventative measures for bluff erosion!'),
+        title: const Text('Learn more about erosion preventation!'),
+        centerTitle: true,
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
+      body: Container(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          padding: EdgeInsets.all(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Stack(
+                alignment: Alignment.topLeft,
+                children: <Widget>[
+                  Container(
+                    width: 500,
+                    height: 500,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            "images/erosion_prevention_measures.png"),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 200,
+                    top: 200,
+                    child: FloatingActionButton.extended(
+                      heroTag: "vegetation",
+                      onPressed: _launchVegetationURL,
+                      label: const Text('vegetation'),
+                    ),
+                  ),
+                  Positioned(
+                    left: 200,
+                    top: 300,
+                    child: FloatingActionButton.extended(
+                      heroTag: "sand dunes",
+                      onPressed: _launchSandDunesURL(),
+                      label: const Text('sand dunes'),
+                    ),
+                  ),
+                  Positioned(
+                    left: 200,
+                    top: 350,
+                    child: FloatingActionButton.extended(
+                      heroTag: "sea wall",
+                      onPressed: _launchSeaWallURL(),
+                      label: const Text('sea wall'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

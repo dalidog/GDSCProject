@@ -81,6 +81,8 @@ flutter:
     - images/wave.png
     - images/wave-short.png
 
+    - images/erosion_prevention_measures.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
