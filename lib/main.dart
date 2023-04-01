@@ -22,7 +22,7 @@ ImageMap images = ImageMap();
 int treeOffset = -250;
 int duneOffset = -400;
 int wallOffset = -500;
-double waveOffset = 500;
+double waveOffset = 1000;
 bool wallBuilt = false;
 int numDunes = 0;
 int numTrees = 0;
@@ -251,11 +251,7 @@ class GameState extends State<Game> {
     Sprite wave1 = Sprite.fromImage(waveImage1!);
     wave1.scaleX = 8.0;
     wave1.scaleY = 2.0;
-
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-    wave1.position = Offset(screenWidth / 2, waveOffset + screenHeight / 2);
-
+    wave1.position = Offset(0, waveOffset);
     rootNode.addChild(wave1);
     waveOffset -= waveSpeed;
     if (waveOffset == 0) {

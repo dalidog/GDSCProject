@@ -433,7 +433,7 @@ class GameState extends State<Game> {
                     left: 150,
                     top: 100,
                     child: _counter == 0
-                        ? counter > 0 && waveOffset > 0
+                        ? counter > 0 && waveOffset > -500
                             ? Text(
                                 'You WON!',
                                 textAlign: TextAlign.center,
